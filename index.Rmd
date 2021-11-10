@@ -24,6 +24,7 @@ library(leafem)
 library(shiny)
 library(shinydashboard)
 library(shinyWidgets)
+library(rgdal)
 library(tidyverse)
 ```
 
@@ -34,8 +35,6 @@ casos_p <-
 casos_p <-
   casos_p %>%
   st_transform(4326)
-fallecidos <-
-  rast("/vsicurl/https://marcelocubero.github.io/capas_proyecto/fallecidos.tif")
 lista_provincias <- unique(casos_p$provincia)
 lista_provincias <- sort(lista_provincias)
 lista_provincias <- c("Todas", lista_provincias)
@@ -128,7 +127,6 @@ Row {data-height=650}
 ### Mapa de casos de covid-19 en Costa Rica, para el viernes 22 de octubre del 2021
 
 ```{r}
-fallecidos_rl <- raster::raster(fallecidos)
 bins <- c(10, 100, 500, 1000, 4000, 7600)
 pal <- colorBin("YlOrBr", domain = casos_p$activos, bins = bins)
 bins3 <- c(1, 5000, 10000, 20000, 40000, 52000)
@@ -143,16 +141,6 @@ renderLeaflet({
     addTiles(group = "OSM") %>%
     addProviderTiles(providers$Esri.NatGeoWorldMap , group = "NatGeo") %>%
     addProviderTiles(providers$CartoDB.DarkMatter, group = "CartoDB-Black") %>%
-    addRasterImage(
-      fallecidos_rl,
-      opacity = 1,
-      group = "Fallecidos",
-      colors = pal2
-    ) %>%
-    addLegend("bottomleft",
-              pal = pal2,
-              values = at,
-              title = "Fallecidos") %>%
     addPolygons(
       data = registros,
       color = "black",
@@ -203,7 +191,7 @@ renderLeaflet({
     addLayersControl(
       "bottomleft",
       baseGroups = c("OSM", "NatGeo", "CartoDB-Black"),
-      overlayGroups = c("Fallecidos", "Casos Activos", "Casos Positivos"),
+      overlayGroups = c("Casos Activos", "Casos Positivos"),
       options = layersControlOptions(collapsed = TRUE)
     ) %>%
     addScaleBar("bottomright") %>%

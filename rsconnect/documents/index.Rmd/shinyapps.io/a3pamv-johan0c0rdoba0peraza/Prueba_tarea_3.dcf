@@ -5,9 +5,9 @@ account: a3pamv-johan0c0rdoba0peraza
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 5090548
-bundleId: 5237228
+bundleId: 5237331
 url: https://johancordobaperaza.shinyapps.io/Prueba_tarea_3/
-when: 1636563317.54104
-lastSyncTime: 1636563317.54104
+when: 1636564589.43179
+lastSyncTime: 1636564589.43179
 asMultiple: FALSE
 asStatic: FALSE
